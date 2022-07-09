@@ -12,8 +12,8 @@ class ReminderViewController: UICollectionViewController {
     
     //둘다 generic type
     //int및 row 일반 매개변수를 지정하여 데이터 소스가 row의 섹션 번호 및 인스턴스에 대해 int의 인스턴스를 사용하도록 컴파일러에 지시함
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, Row>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Row>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, Row>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
     
     var reminder: Reminder
     private var dataSource: DataSource!
@@ -55,8 +55,10 @@ class ReminderViewController: UICollectionViewController {
     
     private func updateSnapshot() {
         var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: 0)
+//        snapshot.appendSections([0])
+//        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: 0)
+        snapshot.appendSections([.view])
+        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: .view)
         dataSource.apply(snapshot)
     }
     
