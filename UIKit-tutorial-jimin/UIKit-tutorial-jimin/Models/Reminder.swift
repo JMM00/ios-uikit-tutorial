@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Reminder: Identifiable {
+//equatable 속성이 있어야 == != 연산자를 사용하여 비교 가능
+struct Reminder: Equatable, Identifiable {
     var id: String = UUID().uuidString
     var title: String
     var dueDate: Date

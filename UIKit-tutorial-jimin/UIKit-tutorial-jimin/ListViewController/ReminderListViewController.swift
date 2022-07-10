@@ -56,7 +56,13 @@ class ReminderListViewController: UICollectionViewController {
     
     func showDetail(for id: Reminder.ID) {
         let reminder = reminder(for: id)
-        let viewController = ReminderViewController(reminder: reminder)
+        //미리알림 편집할 때마다 ReminderViewController에서 수행할 작업 정의
+        let viewController = ReminderViewController(reminder: reminder) { [weak self] reminder in
+            ///data source의 reminder와 user interface를 reminder가 변경될 때마다 update해야함
+            self?.update(reminder, with: reminder.id)
+            //updating snapshot은 reminder의 배열에 의존하기 때문에, reminder배열을 먼저 update해야함
+            self?.updateSnapshot(reloading: [reminder.id])
+        }
         navigationController?.pushViewController(viewController, animated: true)
     }
     

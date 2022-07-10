@@ -88,10 +88,10 @@
 			children = (
 				EC27E08F2879AE070021320B /* DetailViewController */,
 				EC27E094287AA40C0021320B /* ContentView */,
+				EC898F8C287883BA00F626E1 /* ListViewController */,
 				EC24518C2874B53D00091EEF /* Models */,
 				EC2451782874B51B00091EEF /* AppDelegate.swift */,
 				EC24517A2874B51B00091EEF /* SceneDelegate.swift */,
-				EC898F8C287883BA00F626E1 /* ListViewController */,
 				EC24517E2874B51B00091EEF /* Main.storyboard */,
 				EC2451812874B51B00091EEF /* Assets.xcassets */,
 				EC2451832874B51B00091EEF /* LaunchScreen.storyboard */,

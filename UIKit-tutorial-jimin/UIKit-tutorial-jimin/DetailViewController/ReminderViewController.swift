@@ -15,11 +15,21 @@ class ReminderViewController: UICollectionViewController {
     private typealias DataSource = UICollectionViewDiffableDataSource<Section, Row>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
     
-    var reminder: Reminder
+    var reminder: Reminder {
+        didSet {
+            onChange(reminder)
+        }
+    }
+    //사용자가 저장 또는 삭제를 선택할 때까지 편집 내용 저장
+    var workingReminder: Reminder
+    var onChange: (Reminder)->Void
     private var dataSource: DataSource!
     
-    init(reminder: Reminder) {
+    //클로저를 인수로 전달할 때 함수가 반환된 후에 호출되면 escaping처리로 레이블을 지정해야 함
+    init(reminder: Reminder, onChange: @escaping (Reminder)->Void) {
         self.reminder = reminder
+        self.workingReminder = reminder
+        self.onChange = onChange
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         listConfiguration.showsSeparators = false
         listConfiguration.headerMode = .firstItemInSection
@@ -47,9 +57,11 @@ class ReminderViewController: UICollectionViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if editing {
-            updateSnapshotForEditing()
+//            updateSnapshotForEditing()
+            prepareForEditing()
         }else {
-            updateSnapshotForViewing()
+//            updateSnapshotForViewing()
+            prepareForViewing()
         }
     }
     
@@ -74,6 +86,18 @@ class ReminderViewController: UICollectionViewController {
         cell.tintColor = .todayPrimaryTint
     }
     
+    @objc func didCancelEdit() {
+        //사용자가 cancel선택 시 temporary working reminder를 원래 상태로 reset
+        workingReminder = reminder
+        //편집모드일 때는 오른쪽 navigation bar item이 'Done'으로 view모드일 때는 'Edit'으로 표시
+        setEditing(false, animated: true)
+    }
+    
+    private func prepareForEditing() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelEdit))
+        updateSnapshotForEditing()
+    }
+    
     private func updateSnapshotForEditing() {
         var snapshot = Snapshot()
         snapshot.appendSections([.title, .date, .notes])
@@ -89,6 +113,15 @@ class ReminderViewController: UICollectionViewController {
         snapshot.appendSections([.view])
         snapshot.appendItems([.header(""), .viewTitle, .viewDate, .viewTime, .viewNotes], toSection: .view)
         dataSource.apply(snapshot)
+    }
+    //user가 editing mode에 들어가거나 나올때 수행하는 task정의
+    private func prepareForViewing() {
+        //prepareForViewing일 때 left bar button item제거
+        navigationItem.leftBarButtonItem = nil
+        if workingReminder != reminder {
+            reminder = workingReminder
+        }
+        updateSnapshotForViewing()
     }
     
     private func section(for indexPath: IndexPath) -> Section {
