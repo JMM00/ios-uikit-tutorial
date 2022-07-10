@@ -32,7 +32,7 @@ extension ReminderViewController {
         contentConfiguration.text = title
         return contentConfiguration
     }
-    func dateConfifuration(for cell: UICollectionViewListCell, with date: Date) -> DatePickerContentView.Configuration {
+    func dateConfiguration(for cell: UICollectionViewListCell, with date: Date) -> DatePickerContentView.Configuration {
         var contentConfiguration = cell.datePickerConfiguration()
         contentConfiguration.date = date
         return contentConfiguration

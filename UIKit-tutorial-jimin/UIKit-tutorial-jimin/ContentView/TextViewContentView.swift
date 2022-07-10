@@ -14,7 +14,7 @@ class TextViewContentView: UIView, UIContentView {
         var text: String? = ""
 
         func makeContentView() -> UIView & UIContentView {
-            return TextFieldContentView(self)
+            return TextViewContentView(self)
         }
         
     }
