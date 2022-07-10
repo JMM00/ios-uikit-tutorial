@@ -22,6 +22,7 @@ class ReminderViewController: UICollectionViewController {
         self.reminder = reminder
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         listConfiguration.showsSeparators = false
+        listConfiguration.headerMode = .firstItemInSection
         let listLayout = UICollectionViewCompositionalLayout.list(using: listConfiguration)
         super.init(collectionViewLayout: listLayout)
     }
@@ -38,36 +39,63 @@ class ReminderViewController: UICollectionViewController {
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
         navigationItem.title = NSLocalizedString("Reminder", comment: "Reminder view controller title")
+        navigationItem.rightBarButtonItem = editButtonItem
         //뷰 컨트롤러가 처음 로드될 때 이 목록에 데이터 스냅샷을 적용 시스템은 그에 따라 목록을 자동으로 구성
-        updateSnapshot()
+        updateSnapshotForViewing()
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing {
+            updateSnapshotForEditing()
+        }else {
+            updateSnapshotForViewing()
+        }
     }
     
     func cellRegistrationHandler(cell: UICollectionViewListCell, indexPath: IndexPath, row: Row) {
-        var contentConfiguration = cell.defaultContentConfiguration()
-        //데이터 제공
-        contentConfiguration.text = text(for: row)
-        //textStyle계산 변수 사용하여 글꼴 스타일 제공
-        contentConfiguration.textProperties.font = UIFont.preferredFont(forTextStyle: row.textStyle)
-        contentConfiguration.image = row.image
-        cell.contentConfiguration = contentConfiguration
+        let section = section(for: indexPath)
+        switch (section, row) {
+        case (_, .header(let title)):
+                //ReminderViewController+CellConfiguration으로 이동
+            cell.contentConfiguration = headerConfiguration(for: cell, with: title)
+        case (.view, _):
+            //ReminderViewController+CellConfiguration로 이동
+            cell.contentConfiguration = defaultConfiguration(for: cell, at: row)
+        case (.title, .editText(let title)):
+            cell.contentConfiguration = titleConfiguration(for: cell, with: title)
+        case (.date, .editDate(let date)):
+            cell.contentConfiguration = dateConfifuration(for: cell, with: date)
+        case (.notes, .editText(let notes)):
+            cell.contentConfiguration = notesConfiguration(for: cell, with: notes)
+        default:
+            fatalError("Unexpected combination of section and row. ")
+        }
         cell.tintColor = .todayPrimaryTint
     }
     
-    private func updateSnapshot() {
+    private func updateSnapshotForEditing() {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.title, .date, .notes])
+        snapshot.appendItems([.header(Section.title.name), .editText(reminder.title)], toSection: .title)
+        snapshot.appendItems([.header(Section.date.name), .editDate(reminder.dueDate)], toSection: .date)
+        snapshot.appendItems([.header(Section.notes.name), .editText(reminder.notes)], toSection: .notes)
+        dataSource.apply(snapshot)
+    }
+    private func updateSnapshotForViewing() {
         var snapshot = Snapshot()
 //        snapshot.appendSections([0])
 //        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: 0)
         snapshot.appendSections([.view])
-        snapshot.appendItems([.viewTitle, .viewDate, .viewTime, .viewNotes], toSection: .view)
+        snapshot.appendItems([.header(""), .viewTitle, .viewDate, .viewTime, .viewNotes], toSection: .view)
         dataSource.apply(snapshot)
     }
     
-    func text(for row: Row) -> String? {
-        switch row {
-        case .viewDate: return reminder.dueDate.dayText
-        case .viewNotes: return reminder.notes
-        case .viewTime: return reminder.dueDate.formatted(date: .omitted, time: .shortened)
-        case .viewTitle: return reminder.title
+    private func section(for indexPath: IndexPath) -> Section {
+        let sectionNumber = isEditing ? indexPath.section + 1 : indexPath.section
+        guard let section = Section(rawValue: sectionNumber) else {
+            fatalError("Unable to find matching section")
         }
+        return section
     }
 }

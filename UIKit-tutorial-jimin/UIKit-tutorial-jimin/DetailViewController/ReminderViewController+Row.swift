@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  ReminderViewController+Row.swift
 //  ios-uikit-tutorial
 //
 //  Created by Jeon Jimin on 2022/07/09.
@@ -9,10 +9,13 @@ import UIKit
 
 extension ReminderViewController {
     enum Row: Hashable {
+        case header(String)
         case viewDate
         case viewNotes
         case viewTime
         case viewTitle
+        case editDate(Date)
+        case editText(String?)
         
         var imageName: String? {
             switch self{
