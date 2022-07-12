@@ -15,6 +15,13 @@ class ReminderListViewController: UICollectionViewController {
     
     var dataSource: DataSource!
     var reminders: [Reminder] = Reminder.sampleData
+    //주어진 list style에 대한 미리 알림 모음을 반환하는 계산속성
+    //filter메서드는 컬렉션을 반복하고 조건을 충족하는 요소만 포함하는 배열 반환
+    //sorted메서드는 주어진 조건에 대해 배열의 순서 정렬
+    var filteredReminders: [Reminder] {
+        return reminders.filter { listStyle.shouldInclude(date: $0.dueDate)}.sorted {$0.dueDate < $1.dueDate}
+    }
+    var listStyle: ReminderListStyle = .today
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +57,8 @@ class ReminderListViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         //indexPath의 item요소는 int이므로 적절한 알림을 검색하기 위해 배열 인덱스로 사용가능
-        let id = reminders[indexPath.item].id
+//        let id = reminders[indexPath.item].id
+        let id = filteredReminders[indexPath.item].id
         //네비게이션 스택에 상세 뷰 컨트롤러를 추가하여 상세 뷰가 화면에 푸시되도록 함
         showDetail(for: id)
 

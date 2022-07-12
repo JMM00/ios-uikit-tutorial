@@ -19,14 +19,20 @@ extension ReminderListViewController {
         NSLocalizedString("Not Completed", comment: "Reminder not completed value")
     }
     
-    func updateSnapshot(reloading ids: [Reminder.ID] = []) {
+    func updateSnapshot(reloading idsThatChanged: [Reminder.ID] = []) {
+        //filteredReminders 배열의 미리 알림에 해당하는 식별자만 포함하도록 idsThatChanged를 필터링하고 결과를 ids 변수에 할당
+        //contains(where:)는 시퀀스에 지정된 요소가 포함되어 있는지 여부를 나타내는 bool값 반환
+        let ids = idsThatChanged.filter { id in filteredReminders.contains(where: {$0.id == id})
+        }
         //create new snapshot
         var snapshot = Snapshot()
         //append section to the snapshot
         snapshot.appendSections([0])
         //append items to the snapshot
 //        snapshot.appendItems(Reminder.sampleData.map { $0.id })
-        snapshot.appendItems(reminders.map {$0.id})
+//        snapshot.appendItems(reminders.map {$0.id})
+        //map메서드를 사용하여 미리알림 배열을 식별자 배열로 반환
+        snapshot.appendItems(filteredReminders.map{$0.id})
         if !ids.isEmpty {
             snapshot.reloadItems(ids)
         }
