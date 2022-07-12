@@ -22,6 +22,9 @@ class ReminderListViewController: UICollectionViewController {
         return reminders.filter { listStyle.shouldInclude(date: $0.dueDate)}.sorted {$0.dueDate < $1.dueDate}
     }
     var listStyle: ReminderListStyle = .today
+    //list style의 name으로 UISegmentedControl을 초기화하고 저장
+    let listStyleSegmentedControl = UISegmentedControl(items: [
+        ReminderListStyle.today.name, ReminderListStyle.future.name, ReminderListStyle.all.name])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +53,14 @@ class ReminderListViewController: UICollectionViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
         addButton.accessibilityLabel = NSLocalizedString("Add reminder", comment: "Add button accessibility label")
         navigationItem.rightBarButtonItem = addButton
+        
+        //선택한 세그먼트의 인덱스 번호를 할당
+        listStyleSegmentedControl.selectedSegmentIndex = listStyle.rawValue
+        //ReminderListViewController에서 분할된 컨트롤을 위한 타겟 객체와 액션 설정
+        listStyleSegmentedControl.addTarget(self, action: #selector(didChangeListStyle(_:)), for: .valueChanged)
+        //navigation 아이템의 titleView에 list style의 segmentedControl할당
+        navigationItem.titleView = listStyleSegmentedControl
+        
         updateSnapshot()
         //assign the data source to the collection view
         collectionView.dataSource = dataSource
