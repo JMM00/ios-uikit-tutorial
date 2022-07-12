@@ -22,6 +22,7 @@ class ReminderViewController: UICollectionViewController {
     }
     //사용자가 저장 또는 삭제를 선택할 때까지 편집 내용 저장
     var workingReminder: Reminder
+    var isAddingNewReminder = false
     var onChange: (Reminder)->Void
     private var dataSource: DataSource!
     
@@ -61,7 +62,11 @@ class ReminderViewController: UICollectionViewController {
             prepareForEditing()
         }else {
 //            updateSnapshotForViewing()
-            prepareForViewing()
+            if !isAddingNewReminder {
+                prepareForViewing()
+            }else{
+                onChange(workingReminder)
+            }
         }
     }
     

@@ -83,6 +83,11 @@ extension ReminderListViewController {
         return UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
     }
     
+    //알림 배열에 알림을 추가하는 메서드
+    func add(_ reminder: Reminder) {
+        reminders.append(reminder)
+    }
+    
     func reminder(for id: Reminder.ID) -> Reminder {
         let index = reminders.indexOfReminder(with: id)
         return reminders[index]
