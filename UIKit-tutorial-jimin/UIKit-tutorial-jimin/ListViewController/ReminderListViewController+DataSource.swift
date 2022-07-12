@@ -88,6 +88,12 @@ extension ReminderListViewController {
         reminders.append(reminder)
     }
     
+    //지정된 식별자로 미리알림을 삭제하는 메서드
+    func deleteReminder(with id: Reminder.ID) {
+        let index = reminders.indexOfReminder(with: id)
+        reminders.remove(at: index)
+    }
+    
     func reminder(for id: Reminder.ID) -> Reminder {
         let index = reminders.indexOfReminder(with: id)
         return reminders[index]

@@ -74,9 +74,24 @@ class ReminderListViewController: UICollectionViewController {
         
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
         listConfiguration.showsSeparators = false
+        listConfiguration.trailingSwipeActionsConfigurationProvider = makeSwipeActions
         listConfiguration.backgroundColor = .clear
         
         return UICollectionViewCompositionalLayout.list(using: listConfiguration)
+    }
+    
+    private func makeSwipeActions(for indexPath: IndexPath?) -> UISwipeActionsConfiguration? {
+        guard let indexPath = indexPath, let id = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        //delete action -> 작업이 데이터 삭제이므로 style = .destructive
+        let deleteActionTitle = NSLocalizedString("Delete", comment: "Delete action title")
+        let deleteAction = UIContextualAction(style: .destructive, title: deleteActionTitle) { [weak self] _, _, completion in
+            //해당하는 알림 삭제
+            self?.deleteReminder(with: id)
+            self?.updateSnapshot()
+            completion(false)
+        }
+        //새 swipe action configuration반환 -> 왜?
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
 
