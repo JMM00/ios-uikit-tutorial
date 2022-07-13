@@ -13,6 +13,8 @@ class ProgressHeaderView: UICollectionReusableView {
     var progress: CGFloat = 0 {
         //진행률 값이 변경될 때 높이 제약조건을 업데이트하는 관찰자를 진행률 속성에 추가
         didSet {
+            //진행상황이 변경될 때마다 progress view를 업데이트
+            setNeedsLayout()
             heightConstraint?.constant = progress * bounds.height
             UIView.animate(withDuration: 0.2) { [weak self] in
                 // layoutIfNeed메서드는 위쪽 및 아래쪽 보기의 높이 변겨엥 애니메이션 적용하여 view layout즉시 업데이트
@@ -25,10 +27,16 @@ class ProgressHeaderView: UICollectionReusableView {
     private let lowerView = UIView(frame: .zero)
     private let containerView = UIView(frame: .zero)
     private var heightConstraint: NSLayoutConstraint?
+    private var valueFormat: String { NSLocalizedString("%d percent", comment: "progress percentage value format")}
     
     override init(frame: CGRect){
         super.init(frame: frame)
         prepareSubview()
+        
+        //해당 요소가 assistive technoloty가 접근할 수 있는 요소인지 접근성 여부를 나타냄 / 표준 UIKit 컨트롤은 기본적으로 값 활성화
+        isAccessibilityElement = true
+        accessibilityLabel = NSLocalizedString("Progress", comment: "Progress view accessibility label")
+        accessibilityTraits.update(with: .updatesFrequently)
     }
     
     required init?(coder: NSCoder) {
@@ -38,6 +46,8 @@ class ProgressHeaderView: UICollectionReusableView {
     //cornerRadius를 사용하여 원 만듦, 크기가 변경될 때마다 cornerRadius 조정할 수 있도록 layout동작을 사용자 정의
     override func layoutSubviews() {
         super.layoutSubviews()
+        //접근성 값에 progress값과 valueFormat값을 사용하여 새 문자열 할당
+        accessibilityValue = String(format: valueFormat, Int(progress * 100.0))
         heightConstraint?.constant = progress * bounds.height
         containerView.layer.masksToBounds = true
         containerView.layer.cornerRadius = 0.5 * containerView.bounds.width
