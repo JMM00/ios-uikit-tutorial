@@ -25,9 +25,21 @@ class ReminderListViewController: UICollectionViewController {
     //list style의 name으로 UISegmentedControl을 초기화하고 저장
     let listStyleSegmentedControl = UISegmentedControl(items: [
         ReminderListStyle.today.name, ReminderListStyle.future.name, ReminderListStyle.all.name])
+    var headerView: ProgressHeaderView?
+    var progress: CGFloat {
+        let chunkSize = 1.0 / CGFloat(filteredReminders.count)
+        //filterReminders에 서 완료된 미리 알림의 백분율 계산을 위해 reduce사용
+        let progress = filteredReminders.reduce(0.0) {
+            let chunk = $1.isComplete ? chunkSize : 0
+            return $0 + chunk
+        }
+        return progress
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.backgroundColor = .todayGradientFutureBegin
         
         let listLayout = listLayout()
         //set cell's content and appearance
@@ -48,6 +60,13 @@ class ReminderListViewController: UICollectionViewController {
         //initialized the data source
         dataSource = DataSource(collectionView: collectionView){(collectionView: UICollectionView, indexPath: IndexPath, itemIdentifier: Reminder.ID) in
             return collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: itemIdentifier)
+        }
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration(elementKind: ProgressHeaderView.elementKind, handler: supplementaryRegistrationHandler)
+        //재사용 가능한 supplementary view 개체를 대기열에서 빼는 메서드 등록 전달
+        //data source에 new header veiw registration을 추가 / 이 클로저는 diffable데이터 소스에서 supplementary header view를 구성하고 반환
+        dataSource.supplementaryViewProvider = { supplementaryView, elementKind, indexPath in
+            return self.collectionView.dequeueConfiguredReusableSupplementary(using: headerRegistration, for: indexPath)
         }
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didPressAddButton(_:)))
@@ -77,6 +96,16 @@ class ReminderListViewController: UICollectionViewController {
         return false
     }
     
+    //collection view가 supplementary view를 표시하려고 할 때 시스템이 메서드를 호출
+    override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        //elemnt 종류가 진행률 보기인지 확인
+        guard elementKind == ProgressHeaderView.elementKind, let progressView = view as? ProgressHeaderView else {
+            return
+        }
+        //header view의 didSet 관찰자 트리거
+        progressView.progress = progress
+    }
+    
     func showDetail(for id: Reminder.ID) {
         let reminder = reminder(for: id)
         //미리알림 편집할 때마다 ReminderViewController에서 수행할 작업 정의
@@ -92,6 +121,7 @@ class ReminderListViewController: UICollectionViewController {
     private func listLayout() -> UICollectionViewCompositionalLayout {
         
         var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        listConfiguration.headerMode = .supplementary
         listConfiguration.showsSeparators = false
         listConfiguration.trailingSwipeActionsConfigurationProvider = makeSwipeActions
         listConfiguration.backgroundColor = .clear
@@ -112,6 +142,12 @@ class ReminderListViewController: UICollectionViewController {
         //새 swipe action configuration반환 -> 왜?
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
+    
+    //registration handler는 supplementary view의 내용과 모양을 구성하는 방법 지정
+    private func supplementaryRegistrationHandler(progressView: ProgressHeaderView, elementKind: String, indexPath: IndexPath) {
+        headerView = progressView
+    }
+    
 
 
 }

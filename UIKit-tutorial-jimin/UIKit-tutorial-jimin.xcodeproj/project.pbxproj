@@ -29,6 +29,7 @@
 		EC898F9A2878A69900F626E1 /* UIColor+Today.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC898F992878A69900F626E1 /* UIColor+Today.swift */; };
 		EC898FA02878A7A700F626E1 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC898F9F2878A7A700F626E1 /* ReminderViewController.swift */; };
 		EC898FA22878AB1A00F626E1 /* ReminderViewController+Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC898FA12878AB1A00F626E1 /* ReminderViewController+Row.swift */; };
+		ECB4AE95287F50850058187F /* ProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB4AE94287F50850058187F /* ProgressHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		EC898F992878A69900F626E1 /* UIColor+Today.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Today.swift"; sourceTree = "<group>"; };
 		EC898F9F2878A7A700F626E1 /* ReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
 		EC898FA12878AB1A00F626E1 /* ReminderViewController+Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReminderViewController+Row.swift"; sourceTree = "<group>"; };
+		ECB4AE94287F50850058187F /* ProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				EC898F8D287883E200F626E1 /* ReminderListViewController+DataSource.swift */,
 				EC898F932878931200F626E1 /* ReminderListViewController+Actions.swift */,
 				EC898F952878A37D00F626E1 /* ReminderDoneButton.swift */,
+				ECB4AE94287F50850058187F /* ProgressHeaderView.swift */,
 			);
 			path = ListViewController;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECB4AE95287F50850058187F /* ProgressHeaderView.swift in Sources */,
 				EC27E096287AA4710021320B /* UIView+PinnedSubview.swift in Sources */,
 				EC27E0912879AE200021320B /* ReminderViewController+Section.swift in Sources */,
 				EC27E09E287ABB380021320B /* DatePickerContentView.swift in Sources */,
