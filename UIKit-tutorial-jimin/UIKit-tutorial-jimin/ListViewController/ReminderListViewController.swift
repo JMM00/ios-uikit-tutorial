@@ -85,6 +85,10 @@ class ReminderListViewController: UICollectionViewController {
         collectionView.dataSource = dataSource
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshBackground()
+    }
     override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         //indexPath의 item요소는 int이므로 적절한 알림을 검색하기 위해 배열 인덱스로 사용가능
 //        let id = reminders[indexPath.item].id
@@ -104,6 +108,13 @@ class ReminderListViewController: UICollectionViewController {
         }
         //header view의 didSet 관찰자 트리거
         progressView.progress = progress
+    }
+    func refreshBackground() {
+        collectionView.backgroundView = nil
+        let backgroundView = UIView()
+        let gradientLayer = CAGradientLayer.gradientLayer(for: listStyle, in: collectionView.frame)
+        backgroundView.layer.addSublayer(gradientLayer)
+        collectionView.backgroundView = backgroundView
     }
     
     func showDetail(for id: Reminder.ID) {

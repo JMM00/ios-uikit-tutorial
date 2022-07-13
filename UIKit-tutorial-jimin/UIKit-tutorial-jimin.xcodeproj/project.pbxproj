@@ -30,6 +30,7 @@
 		EC898FA02878A7A700F626E1 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC898F9F2878A7A700F626E1 /* ReminderViewController.swift */; };
 		EC898FA22878AB1A00F626E1 /* ReminderViewController+Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC898FA12878AB1A00F626E1 /* ReminderViewController+Row.swift */; };
 		ECB4AE95287F50850058187F /* ProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB4AE94287F50850058187F /* ProgressHeaderView.swift */; };
+		ECB4AE97287F645D0058187F /* CAGradientLayer+ListStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB4AE96287F645D0058187F /* CAGradientLayer+ListStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		EC898F9F2878A7A700F626E1 /* ReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
 		EC898FA12878AB1A00F626E1 /* ReminderViewController+Row.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReminderViewController+Row.swift"; sourceTree = "<group>"; };
 		ECB4AE94287F50850058187F /* ProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHeaderView.swift; sourceTree = "<group>"; };
+		ECB4AE96287F645D0058187F /* CAGradientLayer+ListStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+ListStyle.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				EC24518D2874B54A00091EEF /* Reminder.swift */,
 				EC898F992878A69900F626E1 /* UIColor+Today.swift */,
 				EC48D691287DF7FD0038FD36 /* ReminderListStyle.swift */,
+				ECB4AE96287F645D0058187F /* CAGradientLayer+ListStyle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				EC27E093287AA0DA0021320B /* ReminderViewController+CellConfiguration.swift in Sources */,
 				EC898F962878A37D00F626E1 /* ReminderDoneButton.swift in Sources */,
 				EC24517B2874B51B00091EEF /* SceneDelegate.swift in Sources */,
+				ECB4AE97287F645D0058187F /* CAGradientLayer+ListStyle.swift in Sources */,
 				EC24518E2874B54A00091EEF /* Reminder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
