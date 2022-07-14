@@ -14,7 +14,8 @@ class ReminderListViewController: UICollectionViewController {
 //    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, String>
     
     var dataSource: DataSource!
-    var reminders: [Reminder] = Reminder.sampleData
+    var reminders: [Reminder] = []
+//    var reminders: [Reminder] = Reminder.sampleData
     //주어진 list style에 대한 미리 알림 모음을 반환하는 계산속성
     //filter메서드는 컬렉션을 반복하고 조건을 충족하는 요소만 포함하는 배열 반환
     //sorted메서드는 주어진 조건에 대해 배열의 순서 정렬
@@ -83,6 +84,8 @@ class ReminderListViewController: UICollectionViewController {
         updateSnapshot()
         //assign the data source to the collection view
         collectionView.dataSource = dataSource
+        
+        prepareReminderStore()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,6 +130,18 @@ class ReminderListViewController: UICollectionViewController {
             self?.updateSnapshot(reloading: [reminder.id])
         }
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func showError(_ error: Error) {
+        let alertTitle = NSLocalizedString("Error", comment: "Error alert title")
+        let alert = UIAlertController(title: alertTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let actionTitle = NSLocalizedString("OK", comment: "Alert OK button title")
+        //작업 제목과 view controller를 닫는 클로저 -> 경고에 작업 추가
+        //사용자가 메세지 읽은 후 확인 버튼으로 경고 해제 가능
+        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { [weak self] _ in
+            self?.dismiss(animated: true)
+        }))
+        present(alert, animated: true, completion: nil)
     }
     
     private func listLayout() -> UICollectionViewCompositionalLayout {

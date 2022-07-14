@@ -19,6 +19,9 @@ extension ReminderListViewController {
         NSLocalizedString("Not Completed", comment: "Reminder not completed value")
     }
     
+    //공유 알림 저장소를 반환하는 계산속성
+    private var reminderStore: ReminderStore { ReminderStore.shared }
+    
     func updateSnapshot(reloading idsThatChanged: [Reminder.ID] = []) {
         //filteredReminders 배열의 미리 알림에 해당하는 식별자만 포함하도록 idsThatChanged를 필터링하고 결과를 ids 변수에 할당
         //contains(where:)는 시퀀스에 지정된 요소가 포함되어 있는지 여부를 나타내는 bool값 반환
@@ -88,6 +91,27 @@ extension ReminderListViewController {
         button.id = reminder.id
         button.setImage(image, for: .normal)
         return UICellAccessory.CustomViewConfiguration(customView: button, placement: .leading(displayed: .always))
+    }
+    
+    //작업 또는 다른 비동기 함수 내에서 비동기로 표시된 함수를 호출해야함
+    func prepareReminderStore() {
+        //비동기적으로 실행되는 새로운 작업 단위 생성
+        Task {
+            do {
+                try await reminderStore.requestAcess()
+                //readAll()의 결과를 기다린 다음 그 결과를 reminders에 할당
+                reminders = try await reminderStore.readAll()
+            } catch TodayError.accessDenied, TodayError.accessRestricted {
+                //앱이 이벤트에서 작동하기 어려울 때 샘플데이터로 작동할 수 있음
+                #if DEBUG
+                reminders = Reminder.sampleData
+                #endif
+            } catch {
+                //오류 표시 -> 나머지 오류를 catch
+                showError(error)
+            }
+            updateSnapshot()
+        }
     }
     
     //알림 배열에 알림을 추가하는 메서드
