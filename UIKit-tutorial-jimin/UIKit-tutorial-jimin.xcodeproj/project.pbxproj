@@ -35,6 +35,7 @@
 		ECDF38F428801D2200C60BB0 /* EKEventStore+AsyncFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDF38F328801D2200C60BB0 /* EKEventStore+AsyncFetch.swift */; };
 		ECDF38F62880206F00C60BB0 /* Reminder+EKReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDF38F52880206F00C60BB0 /* Reminder+EKReminder.swift */; };
 		ECDF38F82880222900C60BB0 /* ReminderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDF38F72880222900C60BB0 /* ReminderStore.swift */; };
+		ECDF38FA288035A700C60BB0 /* EKReminder+Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDF38F9288035A700C60BB0 /* EKReminder+Reminder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		ECDF38F328801D2200C60BB0 /* EKEventStore+AsyncFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKEventStore+AsyncFetch.swift"; sourceTree = "<group>"; };
 		ECDF38F52880206F00C60BB0 /* Reminder+EKReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reminder+EKReminder.swift"; sourceTree = "<group>"; };
 		ECDF38F72880222900C60BB0 /* ReminderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderStore.swift; sourceTree = "<group>"; };
+		ECDF38F9288035A700C60BB0 /* EKReminder+Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EKReminder+Reminder.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				ECB4AE96287F645D0058187F /* CAGradientLayer+ListStyle.swift */,
 				ECDF38F128801BFB00C60BB0 /* TodayError.swift */,
 				ECDF38F52880206F00C60BB0 /* Reminder+EKReminder.swift */,
+				ECDF38F9288035A700C60BB0 /* EKReminder+Reminder.swift */,
 				ECDF38F72880222900C60BB0 /* ReminderStore.swift */,
 			);
 			path = Models;
@@ -261,6 +264,7 @@
 				ECB4AE97287F645D0058187F /* CAGradientLayer+ListStyle.swift in Sources */,
 				EC24518E2874B54A00091EEF /* Reminder.swift in Sources */,
 				ECDF38F82880222900C60BB0 /* ReminderStore.swift in Sources */,
+				ECDF38FA288035A700C60BB0 /* EKReminder+Reminder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

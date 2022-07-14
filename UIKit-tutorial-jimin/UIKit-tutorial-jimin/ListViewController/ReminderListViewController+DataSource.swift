@@ -101,6 +101,9 @@ extension ReminderListViewController {
                 try await reminderStore.requestAcess()
                 //readAll()의 결과를 기다린 다음 그 결과를 reminders에 할당
                 reminders = try await reminderStore.readAll()
+                //외부 앱에서 미리알림 변경 시 이 앱에도 추가되도록하는 기능?
+                //시스템이 변경 알림을 수신하면 view controller에서 해당 작업 메서드 호출
+                NotificationCenter.default.addObserver(self, selector: #selector(eventStoreChanged(_:)), name: .EKEventStoreChanged, object: nil)
             } catch TodayError.accessDenied, TodayError.accessRestricted {
                 //앱이 이벤트에서 작동하기 어려울 때 샘플데이터로 작동할 수 있음
                 #if DEBUG
@@ -113,10 +116,30 @@ extension ReminderListViewController {
             updateSnapshot()
         }
     }
-    
+    func reminderStoreChanged() {
+        Task{
+            reminders = try await reminderStore.readAll()
+            updateSnapshot()
+        }
+    }
     //알림 배열에 알림을 추가하는 메서드
     func add(_ reminder: Reminder) {
-        reminders.append(reminder)
+        //EventKit은 미리 알림에 고유 식별자를 할당 -> 새 식별자를 받을 수 있도록 reminder의 변경가능한 복사본 만들기
+        //지역 변수 reminder은 동일한 이름을 가진 매개변수를 숨김
+        //변수 선언 후에는 reminder매개변수에 접근할 수 없음
+        var reminder = reminder
+        do {
+            //알림을 저장하고 식별자를 새 상수에 저장하는 블록
+            let idFromStore = try reminderStore.save(reminder)
+            // 식별자를 reminder 변수에 할당
+            reminder.id = idFromStore
+            reminders.append(reminder)
+        } catch TodayError.accessDenied {
+            //사용자가 미리알림에 대한 접근 허용을 하지 않았을 경우 save메서드에서 오류 발생
+        } catch {
+            //나머지 모든 오류 조건에 대해 오류 메세지
+            showError(error)
+        }
     }
     
     //지정된 식별자로 미리알림을 삭제하는 메서드
