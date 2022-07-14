@@ -8,6 +8,7 @@
 import UIKit
 
 extension ReminderListViewController {
+    
     @objc func eventStoreChanged(_ notification: NSNotification) {
         reminderStoreChanged()
     }
@@ -29,6 +30,7 @@ extension ReminderListViewController {
         viewController.setEditing(true, animated: false)
         //bar버튼 아이템 만들기
         viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelAdd(_:))) //didCancelAdd가 @objc 속성이기 때문에 selector로 지정 가능
+//        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelAdd(_:)))
         viewController.navigationItem.title = NSLocalizedString("Add Reminder", comment: "Add Reminder view controller title")
         //viewController를 루트뷰로 NavigationController 만들기
         let navigationController = UINavigationController(rootViewController: viewController)

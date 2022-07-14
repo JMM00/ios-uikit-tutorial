@@ -25,8 +25,7 @@ extension ReminderListViewController {
     func updateSnapshot(reloading idsThatChanged: [Reminder.ID] = []) {
         //filteredReminders 배열의 미리 알림에 해당하는 식별자만 포함하도록 idsThatChanged를 필터링하고 결과를 ids 변수에 할당
         //contains(where:)는 시퀀스에 지정된 요소가 포함되어 있는지 여부를 나타내는 bool값 반환
-        let ids = idsThatChanged.filter { id in filteredReminders.contains(where: {$0.id == id})
-        }
+        let ids = idsThatChanged.filter { id in filteredReminders.contains(where: {$0.id == id})}
         //create new snapshot
         var snapshot = Snapshot()
         //append section to the snapshot
@@ -140,12 +139,19 @@ extension ReminderListViewController {
             //나머지 모든 오류 조건에 대해 오류 메세지
             showError(error)
         }
+
     }
     
     //지정된 식별자로 미리알림을 삭제하는 메서드
     func deleteReminder(with id: Reminder.ID) {
-        let index = reminders.indexOfReminder(with: id)
-        reminders.remove(at: index)
+        do {
+            try reminderStore.remove(with: id)
+            let index = reminders.indexOfReminder(with: id)
+            reminders.remove(at: index)
+        } catch TodayError.accessDenied {
+        } catch {
+            showError(error)
+        }
     }
     
     func reminder(for id: Reminder.ID) -> Reminder {
@@ -153,7 +159,13 @@ extension ReminderListViewController {
         return reminders[index]
     }
     func update(_ reminder: Reminder, with id: Reminder.ID) {
-        let index = reminders.indexOfReminder(with: id)
-        reminders[index] = reminder
+        do {
+            try reminderStore.save(reminder)
+            let index = reminders.indexOfReminder(with: id)
+            reminders[index] = reminder
+        } catch TodayError.accessDenied {
+        } catch {
+            showError(error)
+        }
     }
 }

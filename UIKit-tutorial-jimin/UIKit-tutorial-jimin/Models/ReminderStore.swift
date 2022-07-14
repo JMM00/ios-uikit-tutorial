@@ -43,7 +43,7 @@ class ReminderStore{
         //EventKit에서 미리알림 식별자와 일치하는 캘린더 항목을 쿼리
         //일정 항목 검색 후 Reminder로 캐스팅하는 보호문 추가 store에서 항목을 찾을 수 없으면 오류 발생
         //CalendarItem(withIdentifier:)메서드는 EKCalendarItem을 반환하므로 EKReminder로 다운캐스트
-        guard let ekReminder = ekStore.calendarItems(withExternalIdentifier: id) as? EKReminder else {
+        guard let ekReminder = ekStore.calendarItem(withIdentifier: id) as? EKReminder else {
             throw TodayError.failedReadingCalendarItem
         }
         return ekReminder
@@ -60,9 +60,9 @@ class ReminderStore{
         //fetchReminders(matching:)의 결과를 기다리는 상수
         let ekReminders = try await ekStore.fetchReminders(matching: predicate)
         //EKReminder에서 Reminder로 데이터 매핑 결과를 저장하는 상수 생성
-        let reminders: [Reminder] = try ekReminders.compactMap{ eKReminder in
+        let reminders: [Reminder] = try ekReminders.compactMap { ekReminder in
             do {
-                return try Reminder(with: eKReminder)
+                return try Reminder(with: ekReminder)
             } catch TodayError.reminderHasNoDueDate {
                 //nil 반환 시 대상 컬렉션에서 이 알림을 삭제하도록 컴팩트 맵에 지시
                 return nil
@@ -70,6 +70,14 @@ class ReminderStore{
         }
         //기한에 해당하는 알림이 있는 미리 알림만 포함
         return reminders
+    }
+    
+    func remove(with id: Reminder.ID) throws {
+        guard isAvailable else {
+            throw TodayError.accessDenied
+        }
+        let ekReminder = try read(with: id)
+        try ekStore.remove(ekReminder, commit: true)
     }
     //이 메서드가 모든 상황에서 반환하는 식별자를 사용하지 않음
     //@dicardableResult 속성은 호출 사이트가 반환 값을 캡처하지 않는 경우 경고 생략하도록 컴파일러에게 지시

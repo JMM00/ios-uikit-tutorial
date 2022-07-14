@@ -102,12 +102,12 @@
 		EC2451772874B51B00091EEF /* UIKit-tutorial-jimin */ = {
 			isa = PBXGroup;
 			children = (
-				EC27E08F2879AE070021320B /* DetailViewController */,
-				EC27E094287AA40C0021320B /* ContentView */,
-				EC898F8C287883BA00F626E1 /* ListViewController */,
 				EC24518C2874B53D00091EEF /* Models */,
 				EC2451782874B51B00091EEF /* AppDelegate.swift */,
 				EC24517A2874B51B00091EEF /* SceneDelegate.swift */,
+				EC27E094287AA40C0021320B /* ContentView */,
+				EC27E08F2879AE070021320B /* DetailViewController */,
+				EC898F8C287883BA00F626E1 /* ListViewController */,
 				EC24517E2874B51B00091EEF /* Main.storyboard */,
 				EC2451812874B51B00091EEF /* Assets.xcassets */,
 				EC2451832874B51B00091EEF /* LaunchScreen.storyboard */,
@@ -120,15 +120,15 @@
 			isa = PBXGroup;
 			children = (
 				EC898F8A2878839700F626E1 /* Date+Today.swift */,
-				EC24518D2874B54A00091EEF /* Reminder.swift */,
-				ECDF38F328801D2200C60BB0 /* EKEventStore+AsyncFetch.swift */,
-				EC898F992878A69900F626E1 /* UIColor+Today.swift */,
-				EC48D691287DF7FD0038FD36 /* ReminderListStyle.swift */,
 				ECB4AE96287F645D0058187F /* CAGradientLayer+ListStyle.swift */,
-				ECDF38F128801BFB00C60BB0 /* TodayError.swift */,
-				ECDF38F52880206F00C60BB0 /* Reminder+EKReminder.swift */,
+				ECDF38F328801D2200C60BB0 /* EKEventStore+AsyncFetch.swift */,
 				ECDF38F9288035A700C60BB0 /* EKReminder+Reminder.swift */,
+				EC24518D2874B54A00091EEF /* Reminder.swift */,
+				ECDF38F52880206F00C60BB0 /* Reminder+EKReminder.swift */,
+				EC48D691287DF7FD0038FD36 /* ReminderListStyle.swift */,
 				ECDF38F72880222900C60BB0 /* ReminderStore.swift */,
+				ECDF38F128801BFB00C60BB0 /* TodayError.swift */,
+				EC898F992878A69900F626E1 /* UIColor+Today.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -137,9 +137,9 @@
 			isa = PBXGroup;
 			children = (
 				EC898F9F2878A7A700F626E1 /* ReminderViewController.swift */,
+				EC27E092287AA0DA0021320B /* ReminderViewController+CellConfiguration.swift */,
 				EC898FA12878AB1A00F626E1 /* ReminderViewController+Row.swift */,
 				EC27E0902879AE200021320B /* ReminderViewController+Section.swift */,
-				EC27E092287AA0DA0021320B /* ReminderViewController+CellConfiguration.swift */,
 			);
 			path = DetailViewController;
 			sourceTree = "<group>";
@@ -147,11 +147,11 @@
 		EC27E094287AA40C0021320B /* ContentView */ = {
 			isa = PBXGroup;
 			children = (
-				EC27E095287AA4710021320B /* UIView+PinnedSubview.swift */,
-				EC27E097287AA8090021320B /* TextFieldContentView.swift */,
-				EC27E099287AAB270021320B /* UIContentConfiguration+Stateless.swift */,
-				EC27E09B287AB7630021320B /* TextViewContentView.swift */,
 				EC27E09D287ABB380021320B /* DatePickerContentView.swift */,
+				EC27E097287AA8090021320B /* TextFieldContentView.swift */,
+				EC27E09B287AB7630021320B /* TextViewContentView.swift */,
+				EC27E099287AAB270021320B /* UIContentConfiguration+Stateless.swift */,
+				EC27E095287AA4710021320B /* UIView+PinnedSubview.swift */,
 			);
 			path = ContentView;
 			sourceTree = "<group>";
